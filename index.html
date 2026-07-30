@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
 <title>Seminários VIII, cronograma de tarefas</title>
 <meta name="description" content="Cronograma das tarefas de Seminários VIII por grupo de trabalho, de agosto a dezembro de 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,30 +21,28 @@
   --g-escola:#1057c9;
   --g-palestrantes:#00798f;
   --g-ebook:#0b7a38;
-  --g-comida:#a66f00;
+  --g-comida:#986500;
   --g-espaco:#cc4400;
   --g-materiais:#a80c2e;
   --g-divulgacao:#6a1fd0;
   --g-institucionais:#be1490;
 }
-@media (prefers-color-scheme: dark){
-  :root{
-    --ink:#e8ece6;
-    --paper:#11171a;
-    --card:#1a2226;
-    --rule:#2c383d;
-    --muted:#9aabaf;
-    --faint:#6d7f84;
-    --on-c:#0d1214;
-    --g-escola:#6c9dff;
-    --g-palestrantes:#2fc6dc;
-    --g-ebook:#3ecc72;
-    --g-comida:#e8b62c;
-    --g-espaco:#ff8340;
-    --g-materiais:#ff667f;
-    --g-divulgacao:#b184ff;
-    --g-institucionais:#ff6ed0;
-  }
+:root[data-theme="dark"]{
+  --ink:#e8ece6;
+  --paper:#11171a;
+  --card:#1a2226;
+  --rule:#2c383d;
+  --muted:#9aabaf;
+  --faint:#6d7f84;
+  --on-c:#0d1214;
+  --g-escola:#6c9dff;
+  --g-palestrantes:#2fc6dc;
+  --g-ebook:#3ecc72;
+  --g-comida:#e8b62c;
+  --g-espaco:#ff8340;
+  --g-materiais:#ff667f;
+  --g-divulgacao:#b184ff;
+  --g-institucionais:#ff6ed0;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -59,11 +58,20 @@ body{
 .wrap{max-width:920px;margin:0 auto;padding:40px 24px 80px}
 
 /* cabeçalho */
+.topo{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 14px}
 .eyebrow{
   font-family:"IBM Plex Mono",monospace;
   font-size:12px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--faint);margin:0 0 14px;
+  color:var(--faint);margin:0;
 }
+.tema{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);background:transparent;
+  border:1px solid var(--rule);border-radius:2px;padding:6px 10px;cursor:pointer;
+  transition:color .15s,border-color .15s;white-space:nowrap;
+}
+.tema:hover{color:var(--ink);border-color:var(--faint)}
+.tema:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 h1{
   font-family:"Bricolage Grotesque",sans-serif;
   font-weight:800;font-size:clamp(34px,7vw,58px);
@@ -95,8 +103,6 @@ h1{
 .tag:hover{border-color:var(--ink)}
 .tag:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .tag .dot{width:10px;height:10px;border-radius:50%;background:var(--c,currentColor);flex:0 0 auto}
-.tag[aria-pressed="true"]{background:var(--c,var(--ink));color:var(--on-c);border-color:var(--c,var(--ink))}
-.tag[aria-pressed="true"] .dot{background:var(--on-c)}
 .tag[data-g="todos"] .dot{display:none}
 .tag[data-g="escola"]{--c:var(--g-escola);color:var(--c)}
 .tag[data-g="palestrantes"]{--c:var(--g-palestrantes);color:var(--c)}
@@ -106,6 +112,14 @@ h1{
 .tag[data-g="materiais"]{--c:var(--g-materiais);color:var(--c)}
 .tag[data-g="divulgacao"]{--c:var(--g-divulgacao);color:var(--c)}
 .tag[data-g="institucionais"]{--c:var(--g-institucionais);color:var(--c)}
+.tag[data-g][aria-pressed="true"],
+.tag[aria-pressed="true"]{
+  background:var(--c,var(--ink));
+  color:var(--on-c);
+  border-color:var(--c,var(--ink));
+  font-weight:600;
+}
+.tag[data-g][aria-pressed="true"] .dot{background:var(--on-c)}
 
 /* barra de progresso */
 .progresso{
@@ -150,7 +164,7 @@ h1{
   padding:11px 13px;position:relative;
   transition:border-color .15s;
 }
-.item:hover{border-color:var(--faint)}
+.item[data-g]:hover{border-color:color-mix(in srgb, var(--c) 55%, var(--rule))}
 .item::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,var(--ink))}
 .item{color:var(--ink)}
 .item[data-g]{background:color-mix(in srgb, var(--c) 8%, var(--card));border-color:color-mix(in srgb, var(--c) 26%, var(--rule))}
@@ -168,7 +182,7 @@ h1{
   width:17px;height:17px;border:1px solid var(--faint);border-radius:2px;
   background:transparent;cursor:pointer;position:relative;
 }
-.item input:checked{background:currentColor;border-color:currentColor}
+.item input:checked{background:var(--c,var(--ink));border-color:var(--c,var(--ink))}
 .item input:checked::after{
   content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;
   border:solid var(--card);border-width:0 2px 2px 0;transform:rotate(42deg);
@@ -178,6 +192,7 @@ h1{
 .grupo{
   font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;
   text-transform:uppercase;display:block;margin-bottom:2px;
+  color:var(--c,var(--muted));font-weight:500;
 }
 .acao{font-size:14.5px;color:var(--ink);line-height:1.4;display:block}
 .item input:checked ~ .txt .acao{text-decoration:line-through;color:var(--faint)}
@@ -207,7 +222,10 @@ footer{
 <body>
 <div class="wrap">
 <header>
-  <p class="eyebrow">Seminários VIII</p>
+  <div class="topo">
+    <p class="eyebrow">Seminários VIII</p>
+    <button class="tema" id="tema" type="button">Tema claro</button>
+  </div>
   <h1>Cronograma<br>de tarefas</h1>
   <p class="lede">Cada data é o prazo limite, não o dia de começar. O trabalho acontece no intervalo entre um encontro e o seguinte, e a aula que cai na data serve para conferir o que venceu e distribuir o ciclo seguinte.</p>
   <div class="aviso">
@@ -422,6 +440,19 @@ function atualizarProgresso(){
   document.getElementById("contador").textContent =
     `${prontas} de ${total} ${total === 1 ? "concluída" : "concluídas"}`;
 }
+
+const btnTema = document.getElementById("tema");
+function aplicarTema(t){
+  document.documentElement.setAttribute("data-theme", t);
+  btnTema.textContent = t === "dark" ? "Tema claro" : "Tema escuro";
+  try { localStorage.setItem(CHAVE + "-tema", t); } catch (e) {}
+}
+let tema = "dark";
+try { tema = localStorage.getItem(CHAVE + "-tema") || "dark"; } catch (e) {}
+aplicarTema(tema);
+btnTema.addEventListener("click", () => {
+  aplicarTema(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
 
 document.getElementById("reset").addEventListener("click", () => {
   feitas.clear(); salvar(); montarTimeline(); atualizarProgresso();
