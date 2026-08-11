@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark light">
-<title>Seminários VIII, cronograma de tarefas</title>
-<meta name="description" content="Cronograma das tarefas de Seminários VIII por grupo de trabalho, de agosto a dezembro de 2026.">
+<title>Seminários VIII, cronograma</title>
+<meta name="description" content="Cronograma de aulas e de tarefas de Seminários VIII, de agosto a dezembro de 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -26,6 +26,7 @@
   --g-materiais:#a80c2e;
   --g-divulgacao:#6a1fd0;
   --g-institucionais:#be1490;
+  --g-turma:#4a5c63;
 }
 :root[data-theme="dark"]{
   --ink:#e8ece6;
@@ -43,6 +44,7 @@
   --g-materiais:#ff667f;
   --g-divulgacao:#b184ff;
   --g-institucionais:#ff6ed0;
+  --g-turma:#9aabaf;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -100,9 +102,24 @@ h1{
 .aviso{
   display:flex;gap:12px;align-items:flex-start;
   border:1px dashed var(--rule);border-radius:2px;
-  padding:14px 16px;margin:0 0 36px;font-size:14px;color:var(--muted);
+  padding:14px 16px;margin:0 0 32px;font-size:14px;color:var(--muted);
 }
 .aviso b{color:var(--ink);font-weight:600}
+
+/* abas */
+.abas{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 28px}
+.aba{
+  font:500 14px/1 "Instrument Sans",sans-serif;
+  border:1px solid var(--rule);background:transparent;color:var(--ink);
+  border-radius:2px;padding:11px 15px;cursor:pointer;
+  display:inline-flex;align-items:baseline;gap:8px;
+  transition:border-color .15s,background .15s;
+}
+.aba small{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--faint);letter-spacing:.06em}
+.aba:hover{border-color:var(--ink)}
+.aba:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.aba[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600}
+.aba[aria-selected="true"] small{color:var(--paper);opacity:.7}
 
 /* seletor de grupos, os crachás */
 .selector{margin:0 0 8px}
@@ -131,6 +148,7 @@ h1{
 .tag[data-g="materiais"]{--c:var(--g-materiais);color:var(--c)}
 .tag[data-g="divulgacao"]{--c:var(--g-divulgacao);color:var(--c)}
 .tag[data-g="institucionais"]{--c:var(--g-institucionais);color:var(--c)}
+.tag[data-g="turma"]{--c:var(--g-turma);color:var(--c)}
 .tag[data-g][aria-pressed="true"],
 .tag[aria-pressed="true"]{
   background:var(--c,var(--ink));
@@ -154,7 +172,7 @@ h1{
 }
 .reset:hover{color:var(--ink)}
 
-/* linha do tempo */
+/* linha do tempo, usada nas duas abas */
 .encontro{
   display:grid;grid-template-columns:112px 1fr;gap:28px;
   padding:26px 0;border-top:1px solid var(--rule);
@@ -171,8 +189,10 @@ h1{
   text-transform:uppercase;color:var(--faint);
 }
 .pauta{margin:0 0 16px;font-size:15px;color:var(--muted);max-width:56ch}
+.pauta:last-child{margin-bottom:0}
 .pauta strong{color:var(--ink);font-weight:600}
 .semaula{font-style:italic}
+.encontro.folga{opacity:.55}
 
 /* tarefas */
 .lista{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -195,6 +215,7 @@ h1{
 .item[data-g="materiais"]{--c:var(--g-materiais)}
 .item[data-g="divulgacao"]{--c:var(--g-divulgacao)}
 .item[data-g="institucionais"]{--c:var(--g-institucionais)}
+.item[data-g="turma"]{--c:var(--g-turma)}
 .item label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;width:100%}
 .item input{
   appearance:none;-webkit-appearance:none;margin:2px 0 0;flex:0 0 auto;
@@ -224,7 +245,7 @@ footer{
 @media (max-width:640px){
   .wrap{padding:28px 18px 60px}
   .encontro{grid-template-columns:1fr;gap:14px;padding:22px 0}
-  .data{display:flex;align-items:baseline;gap:10px}
+  .data{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
   .data .ter{font-size:19px}
   .data .n{margin-top:0;margin-left:auto}
   .lista.duas{grid-template-columns:1fr}
@@ -232,7 +253,7 @@ footer{
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{
   body{background:#fff;color:#000}
-  .selector,.progresso,.aviso,.reset{display:none}
+  .selector,.progresso,.aviso,.reset,.abas,.tema{display:none}
   .encontro{break-inside:avoid}
   .item{background:#fff}
 }
@@ -257,34 +278,71 @@ footer{
       <li aria-current="step"><span class="seg"></span><span class="num">VIII</span><span class="aqui">você está aqui</span></li>
     </ol>
   </nav>
-  <h1>Cronograma<br>de tarefas</h1>
-  <p class="lede">Cada data é o prazo limite, não o dia de começar. O trabalho acontece no intervalo entre um encontro e o seguinte, e a aula que cai na data serve para conferir o que venceu e distribuir o ciclo seguinte.</p>
+  <h1>Cronograma</h1>
+  <p class="lede" id="lede"></p>
   <div class="aviso">
     <span aria-hidden="true">◇</span>
-    <span><b>A data do evento ainda depende da escola.</b>, mas deve ser realizada em 12/11 ou 26/11. As nove tarefas do dia do evento aparecem no bloco marcado, e mudam de lugar quando a escola responder.</span>
+    <span><b>A data do evento ainda depende da escola</b>, mas deve acontecer em 12/11 ou 26/11, sempre numa quinta. As tarefas do dia do evento aparecem no bloco marcado e mudam de lugar quando a escola responder.</span>
   </div>
 </header>
 
-<section class="selector" aria-labelledby="sel-h">
-  <h2 id="sel-h">Filtre pelo seu grupo</h2>
-  <div class="tags" id="tags" role="group" aria-label="Grupos de trabalho"></div>
-</section>
-
-<div class="progresso">
-  <div class="barra" role="progressbar" aria-label="Tarefas concluídas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra"><span id="barra-fill"></span></div>
-  <span class="contador" id="contador">0 de 38 concluídas</span>
-  <button class="reset" id="reset" type="button">Limpar marcações</button>
+<div class="abas" role="tablist" aria-label="Tipo de cronograma">
+  <button class="aba" type="button" role="tab" id="aba-aulas" data-aba="aulas" aria-selected="true" aria-controls="painel-aulas">Cronograma de aulas <small>11 encontros</small></button>
+  <button class="aba" type="button" role="tab" id="aba-tarefas" data-aba="tarefas" aria-selected="false" aria-controls="painel-tarefas">Cronograma de tarefas <small>por grupo</small></button>
 </div>
 
-<main id="timeline"></main>
+<section id="painel-aulas" role="tabpanel" aria-labelledby="aba-aulas">
+  <main id="aulas"></main>
+</section>
+
+<section id="painel-tarefas" role="tabpanel" aria-labelledby="aba-tarefas" hidden>
+  <div class="selector" aria-labelledby="sel-h">
+    <h2 id="sel-h">Filtre pelo seu grupo</h2>
+    <div class="tags" id="tags" role="group" aria-label="Grupos de trabalho"></div>
+  </div>
+
+  <div class="progresso">
+    <div class="barra" role="progressbar" aria-label="Tarefas concluídas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barra"><span id="barra-fill"></span></div>
+    <span class="contador" id="contador"></span>
+    <button class="reset" id="reset" type="button">Limpar marcações</button>
+  </div>
+
+  <main id="timeline"></main>
+</section>
 
 <footer>
-  <p>As marcações ficam salvas neste navegador. Cada pessoa vê as suas.</p>
+  <p>As marcações e a escolha de aba e de tema ficam salvas neste navegador. Cada pessoa vê as suas.</p>
 </footer>
 </div>
 
 <script>
-/* Grupos de trabalho. A chave é usada nas tarefas abaixo. */
+/* ————— Aba 1, cronograma de aulas ————— */
+const AULAS = [
+  { ter:"04/08", qui:"06/08",
+    t:"Alinhamentos iniciais, divisão da turma, distribuição de tarefas" },
+  { ter:"18/08", qui:"20/08",
+    t:"Distribuição de tarefas e alinhamentos sobre convidados" },
+  { ter:"01/09", qui:"03/09",
+    t:"Retorno do primeiro contato com a escola e com os palestrantes, com número de alunos e de palestrantes confirmados, e checagem de verba para o banner" },
+  { ter:"15/09", qui:"17/09",
+    t:"Entrega das análises conjunturais, orçamento e definição do fornecedor do lanche, reserva do espaço com o CSC e primeira versão dos materiais de divulgação com feedbacks da turma" },
+  { ter:"29/09", qui:"01/10",
+    t:"Entrega da 1ª versão do e-book e comentários da turma, versão final dos materiais de divulgação, alinhamento com o Centro de Produção e conferência de espaço e materiais dos palestrantes, mais relato de trabalho" },
+  { ter:"13/10", qui:"15/10", semaula:true,
+    t:"MINIONU, não haverá aula presencial, relato de trabalho por escrito" },
+  { ter:"27/10", qui:"29/10",
+    t:"Entrega da 2ª versão do e-book, confirmação final da escola e dos palestrantes, início da divulgação, crachás, plaquinhas e material do mestre de cerimônia, alinhamento da operação do dia do evento. Versão final do e-book entregue em 03/11, fora dos encontros" },
+  { ter:"10/11", qui:"12/11", evento:true,
+    t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
+  { ter:"24/11", qui:"26/11", evento:true,
+    t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
+  { ter:"08/12", qui:"10/12",
+    t:"Fechamento operacional, com certificados, devolução de materiais e preenchimento do formulário de extensão" },
+  { ter:"15/12", qui:"17/12",
+    t:"Alinhamentos finais e relatório" }
+];
+
+/* ————— Aba 2, cronograma de tarefas ————— */
 const GRUPOS = {
   escola:        "Escola",
   palestrantes:  "Palestrantes",
@@ -293,21 +351,21 @@ const GRUPOS = {
   espaco:        "Logística espaço",
   materiais:     "Logística materiais",
   divulgacao:    "Mídias divulgação",
-  institucionais:"Mídias institucionais"
+  institucionais:"Mídias institucionais",
+  turma:         "Turma inteira"
 };
 
-/* Encontros em ordem cronológica. Para editar o cronograma, mexa só aqui. */
 const ENCONTROS = [
   { ter:"04/08", qui:"06/08",
-    pauta:"Alinhamentos iniciais e análise do questionário. Fechar a proposta para a escola com as duas datas candidatas.",
+    pauta:"Alinhamentos iniciais, divisão da turma nos oito grupos e primeira distribuição de tarefas. Fechar a proposta para a escola com as duas datas candidatas.",
     tarefas:[] },
 
   { ter:"18/08", qui:"20/08",
-    pauta:"Divisão da turma nos oito grupos, distribuição de tarefas, mapeamento de convidados e da identidade visual. Cada grupo sai com os itens de 01/09 e 15/09 na mão.",
+    pauta:"Distribuição de tarefas e alinhamentos sobre convidados. Cada grupo sai com os itens de 01/09 e 15/09 na mão.",
     tarefas:[] },
 
   { ter:"01/09", qui:"03/09",
-    pauta:"Relato de trabalho e alinhamento. Conferência dos dois primeiros contatos.",
+    pauta:"Retorno dos primeiros contatos e relato de trabalho.",
     tarefas:[
       { g:"escola",       t:"Primeiro contato com a escola, resposta à proposta e número de alunos" },
       { g:"palestrantes", t:"Primeiro contato com os palestrantes, resposta à proposta e número de convidados" },
@@ -315,45 +373,51 @@ const ENCONTROS = [
     ] },
 
   { ter:"15/09", qui:"17/09",
-    pauta:"Primeira versão do e-book e comentários da turma, mais relato de trabalho.",
+    pauta:"Entrega das análises conjunturais e primeira rodada de logística.",
     tarefas:[
+      { g:"turma",        t:"Entrega das análises conjunturais, terça para a manhã e quinta para a noite" },
       { g:"escola",       t:"Acompanhamento da escola" },
       { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
-      { g:"ebook",        t:"Entrega da primeira versão" },
       { g:"comida",       t:"Orçamento e definição do fornecedor, com materiais do lanche" },
       { g:"espaco",       t:"Definir a reserva do espaço com o CSC" },
-      { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação" }
+      { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação e feedbacks da turma" }
     ] },
 
   { ter:"29/09", qui:"01/10",
-    pauta:"Segunda versão do e-book, alinhamento pré-recesso e relato de trabalho. Distribuir as dez tarefas de 27/10, com metade marcada para estar pronta em 13/10.",
+    pauta:"Primeira versão do e-book, comentários da turma e relato de trabalho. Distribuir as dez tarefas de 27/10, com metade marcada para estar pronta em 13/10.",
     tarefas:[
+      { g:"ebook",        t:"Entrega da 1ª versão do e-book" },
       { g:"escola",       t:"Acompanhamento da escola" },
       { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
-      { g:"ebook",        t:"Entrega da segunda versão" },
       { g:"comida",       t:"Alinhamento com o Centro de Produção do ICS" },
       { g:"espaco",       t:"Contato com o CSC para o layout do espaço" },
       { g:"materiais",    t:"Conferir disponibilidade dos materiais pedidos pelos palestrantes" },
-      { g:"divulgacao",   t:"Versão final dos materiais de divulgação" }
+      { g:"divulgacao",   t:"Versão final dos materiais de divulgação e feedbacks da turma" }
     ] },
 
   { ter:"13/10", qui:"15/10", semaula:true,
-    pauta:"MINIONU, não haverá aula. Cada grupo envia relato por escrito no registro compartilhado, com metade dos itens de 27/10 já prontos.",
+    pauta:"MINIONU, não haverá aula presencial. Cada grupo envia relato por escrito no registro compartilhado, com metade dos itens de 27/10 já prontos.",
     tarefas:[] },
 
   { ter:"27/10", qui:"29/10",
-    pauta:"Entrega final do e-book e ensaio da operação do dia. Sai daqui a escala nominal por horário, o mapa do espaço, a pauta do mestre de cerimônia e o plano B para ausência de palestrante.",
+    pauta:"Segunda versão do e-book e ensaio da operação do dia. Sai daqui a escala nominal por horário, o mapa do espaço, a pauta do mestre de cerimônia e o plano B para ausência de palestrante.",
     tarefas:[
+      { g:"ebook",          t:"Entrega da 2ª versão do e-book" },
       { g:"escola",         t:"Confirmação final da escola" },
       { g:"palestrantes",   t:"Confirmação final dos palestrantes" },
-      { g:"ebook",          t:"Entrega da versão final" },
       { g:"comida",         t:"Aprovação da verba do Centro de Produção e contato com o fornecedor" },
       { g:"espaco",         t:"Mapa final do espaço e verificação do layout" },
-      { g:"materiais",      t:"Conferir disponibilidade final dos materiais com o CSC" },
+      { g:"materiais",      t:"Reservar oficialmente os materiais com o CSC e com o audiovisual" },
       { g:"divulgacao",     t:"Começar a divulgação e confeccionar o convite" },
       { g:"institucionais", t:"Crachás da equipe e dos palestrantes" },
       { g:"institucionais", t:"Plaquinhas dos estandes" },
       { g:"institucionais", t:"Material do mestre de cerimônia, pauta e mini-currículos" }
+    ] },
+
+  { ter:"03/11", qui:"terça sem aula", semencontro:true,
+    pauta:"Entrega remota, entre um encontro e outro.",
+    tarefas:[
+      { g:"ebook", t:"Entrega da versão final do e-book" }
     ] },
 
   { ter:"10/11", qui:"12/11",
@@ -363,9 +427,9 @@ const ENCONTROS = [
     ] },
 
   { evento:true, ter:"Dia do evento", qui:"12/11 ou 26/11",
-    pauta:"O bloco inteiro anda junto com a data que a escola confirmar. A formatação da divulgação do e-book vence na véspera.",
+    pauta:"O bloco inteiro anda junto com a data que a escola confirmar.",
     tarefas:[
-      { g:"ebook",        t:"Formatação da divulgação do e-book, na véspera" },
+      { g:"ebook",        t:"Divulgação do e-book" },
       { g:"escola",       t:"Recepção da escola" },
       { g:"palestrantes", t:"Recepção dos palestrantes" },
       { g:"comida",       t:"Buscar e organizar o lanche" },
@@ -377,14 +441,15 @@ const ENCONTROS = [
     ] },
 
   { ter:"24/11", qui:"26/11",
-    pauta:"Relatório, se o evento tiver acontecido em 12/11, com a divisão da redação do relatório. Se for em 26/11, esta terça é a última preparação e a quinta é o próprio evento.",
+    pauta:"Se o evento aconteceu em 12/11, esta semana é de relatório e divisão da redação. Se for em 26/11, esta terça é a última preparação e a quinta é o próprio evento.",
     tarefas:[] },
 
   { ter:"08/12", qui:"10/12",
-    pauta:"Fechamento operacional, com envio dos certificados e divulgação do e-book.",
+    pauta:"Fechamento operacional, com certificados, devolução de materiais e formulário de extensão.",
     tarefas:[
       { g:"institucionais", t:"Certificados, layout e preenchimento final" },
-      { g:"materiais",      t:"Devolução dos materiais" }
+      { g:"materiais",      t:"Devolução dos materiais" },
+      { g:"turma",          t:"Preenchimento do formulário de extensão" }
     ] },
 
   { ter:"15/12", qui:"17/12",
@@ -395,14 +460,27 @@ const ENCONTROS = [
 const CHAVE = "seminarios8";
 let feitas = new Set();
 let filtro = "todos";
+let aba = "aulas";
 
 try {
   const salvo = localStorage.getItem(CHAVE);
   if (salvo) feitas = new Set(JSON.parse(salvo));
+  aba = localStorage.getItem(CHAVE + "-aba") || "aulas";
 } catch (e) {}
 
 function salvar(){
   try { localStorage.setItem(CHAVE, JSON.stringify([...feitas])); } catch (e) {}
+}
+
+function montarAulas(){
+  document.getElementById("aulas").innerHTML = AULAS.map(a =>
+    `<section class="encontro${a.semaula ? " folga" : ""}${a.evento ? " evento" : ""}">
+      <div class="data">
+        <span class="ter">${a.ter}</span>
+        <span class="qui">${a.qui} qui</span>
+      </div>
+      <div><p class="pauta${a.semaula ? " semaula" : ""}">${a.t}</p></div>
+    </section>`).join("");
 }
 
 function montarTags(){
@@ -420,32 +498,34 @@ function montarTags(){
 function montarTimeline(){
   const alvo = document.getElementById("timeline");
   alvo.innerHTML = ENCONTROS.map((e, i) => {
-    const visiveis = filtro === "todos" ? e.tarefas : e.tarefas.filter(t => t.g === filtro);
+    const visiveis = e.tarefas
+      .map((t, k) => ({ t, k }))
+      .filter(o => filtro === "todos" || o.t.g === filtro);
     const apagado = filtro !== "todos" && visiveis.length === 0;
     const n = e.tarefas.length;
     const rotulo = filtro === "todos"
       ? (n ? `${n} ${n === 1 ? "tarefa" : "tarefas"}` : "")
       : (visiveis.length ? `${visiveis.length} ${visiveis.length === 1 ? "sua" : "suas"}` : "");
-    const itens = visiveis.map((t, j) => {
-      const id = `t-${i}-${e.tarefas.indexOf(t)}-${j}`;
-      const marcada = feitas.has(id);
+    const itens = visiveis.map(({ t, k }) => {
+      const id = `t-${i}-${k}`;
       return `<li class="item" data-g="${t.g}">
-        <label><input type="checkbox" id="${id}" ${marcada ? "checked" : ""}>
+        <label><input type="checkbox" id="${id}" ${feitas.has(id) ? "checked" : ""}>
           <span class="txt"><span class="grupo">${GRUPOS[t.g]}</span>
           <span class="acao">${t.t}</span></span></label></li>`;
     }).join("");
+    const dataQui = (e.evento || e.semencontro) ? e.qui : e.qui + " qui";
     return `<section class="encontro${apagado ? " apagado" : ""}${e.evento ? " evento" : ""}">
       <div class="data">
         <span class="ter">${e.ter}</span>
-        <span class="qui">${e.evento ? e.qui : e.qui + " qui"}</span>
+        <span class="qui">${dataQui}</span>
         ${rotulo ? `<span class="n">${rotulo}</span>` : ""}
       </div>
       <div>
         <p class="pauta${e.semaula ? " semaula" : ""}">${e.pauta}</p>
         ${itens ? `<ul class="lista${visiveis.length > 3 ? " duas" : ""}">${itens}</ul>`
-                : (e.tarefas.length && apagado
+                : (n && apagado
                     ? `<p class="vazio">Nada do seu grupo vence nesta data.</p>`
-                    : (e.tarefas.length ? "" : `<p class="vazio">Nenhuma entrega vence nesta data.</p>`))}
+                    : (n ? "" : `<p class="vazio">Nenhuma entrega vence nesta data.</p>`))}
       </div>
     </section>`;
   }).join("");
@@ -463,7 +543,7 @@ function atualizarProgresso(){
   ENCONTROS.forEach((e, i) => e.tarefas.forEach((t, k) => {
     if (filtro !== "todos" && t.g !== filtro) return;
     total++;
-    if ([...feitas].some(id => id.startsWith(`t-${i}-${k}-`))) prontas++;
+    if (feitas.has(`t-${i}-${k}`)) prontas++;
   }));
   const pct = total ? Math.round(prontas / total * 100) : 0;
   document.getElementById("barra-fill").style.width = pct + "%";
@@ -471,6 +551,22 @@ function atualizarProgresso(){
   document.getElementById("contador").textContent =
     `${prontas} de ${total} ${total === 1 ? "concluída" : "concluídas"}`;
 }
+
+function aplicarAba(){
+  document.getElementById("painel-aulas").hidden = aba !== "aulas";
+  document.getElementById("painel-tarefas").hidden = aba !== "tarefas";
+  document.querySelectorAll(".aba").forEach(b =>
+    b.setAttribute("aria-selected", b.dataset.aba === aba));
+  document.getElementById("lede").textContent = aba === "aulas"
+    ? "As aulas são quinzenais e funcionam como reuniões de acompanhamento. A turma da manhã se encontra na terça e a da noite na quinta, com a mesma pauta."
+    : "Cada data é o prazo limite, não o dia de começar. O trabalho acontece no intervalo entre um encontro e o seguinte, e a aula que cai na data serve para conferir o que venceu e distribuir o ciclo seguinte.";
+  try { localStorage.setItem(CHAVE + "-aba", aba); } catch (e) {}
+}
+
+document.querySelectorAll(".aba").forEach(b => b.addEventListener("click", () => {
+  aba = b.dataset.aba;
+  aplicarAba();
+}));
 
 const btnTema = document.getElementById("tema");
 function aplicarTema(t){
@@ -489,9 +585,11 @@ document.getElementById("reset").addEventListener("click", () => {
   feitas.clear(); salvar(); montarTimeline(); atualizarProgresso();
 });
 
+montarAulas();
 montarTags();
 montarTimeline();
 atualizarProgresso();
+aplicarAba();
 </script>
 </body>
 </html>
