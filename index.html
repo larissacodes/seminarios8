@@ -18,6 +18,7 @@
   --muted:#5f6f74;
   --faint:#8b9a9c;
   --on-c:#ffffff;
+  --aviso:#986500;
   --g-escola:#1057c9;
   --g-palestrantes:#00798f;
   --g-ebook:#0b7a38;
@@ -36,6 +37,7 @@
   --muted:#9aabaf;
   --faint:#6d7f84;
   --on-c:#0d1214;
+  --aviso:#e8b62c;
   --g-escola:#6c9dff;
   --g-palestrantes:#2fc6dc;
   --g-ebook:#3ecc72;
@@ -99,12 +101,12 @@ h1{
   line-height:.98;letter-spacing:-.025em;margin:0 0 18px;
 }
 .lede{max-width:52ch;color:var(--muted);margin:0 0 28px;font-size:17px}
-.aviso{
+.destaque{
   display:flex;gap:12px;align-items:flex-start;
   border:1px dashed var(--rule);border-radius:2px;
   padding:14px 16px;margin:0 0 32px;font-size:14px;color:var(--muted);
 }
-.aviso b{color:var(--ink);font-weight:600}
+.destaque b{color:var(--ink);font-weight:600}
 
 /* abas */
 .abas{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 28px}
@@ -174,25 +176,35 @@ h1{
 
 /* linha do tempo, usada nas duas abas */
 .encontro{
-  display:grid;grid-template-columns:112px 1fr;gap:28px;
+  display:grid;grid-template-columns:128px 1fr;gap:28px;
   padding:26px 0;border-top:1px solid var(--rule);
 }
 .encontro:last-of-type{border-bottom:1px solid var(--rule)}
 .encontro.apagado{opacity:.34}
-.encontro.evento .data{color:var(--ink)}
+.encontro.evento .d{color:var(--ink)}
 .encontro.evento .pauta{border-left:2px solid var(--ink);padding-left:14px}
-.data{font-family:"IBM Plex Mono",monospace;line-height:1.35}
-.data .ter{font-size:22px;font-weight:500;display:block;letter-spacing:-.02em}
-.data .qui{font-size:13px;color:var(--faint);display:block;margin-top:2px}
-.data .n{
-  display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.08em;
+.data{font-family:"IBM Plex Mono",monospace;line-height:1.3}
+.linha{margin:0 0 10px}
+.linha:last-of-type{margin-bottom:0}
+.rot{
+  display:block;font-size:11px;letter-spacing:.09em;
   text-transform:uppercase;color:var(--faint);
+}
+.d{display:block;font-size:21px;font-weight:500;letter-spacing:-.02em;margin-top:1px}
+.data .n{
+  display:inline-block;margin-top:12px;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--faint);
+}
+.nota{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--aviso);
+  border:1px solid color-mix(in srgb, var(--aviso) 45%, transparent);
+  background:color-mix(in srgb, var(--aviso) 9%, transparent);
+  border-radius:2px;padding:5px 9px;display:inline-block;margin:0 0 12px;line-height:1.4;
 }
 .pauta{margin:0 0 16px;font-size:15px;color:var(--muted);max-width:56ch}
 .pauta:last-child{margin-bottom:0}
 .pauta strong{color:var(--ink);font-weight:600}
-.semaula{font-style:italic}
-.encontro.folga{opacity:.55}
 
 /* tarefas */
 .lista{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -245,15 +257,16 @@ footer{
 @media (max-width:640px){
   .wrap{padding:28px 18px 60px}
   .encontro{grid-template-columns:1fr;gap:14px;padding:22px 0}
-  .data{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .data .ter{font-size:19px}
+  .data{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
+  .linha{margin:0}
+  .d{font-size:19px}
   .data .n{margin-top:0;margin-left:auto}
   .lista.duas{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media print{
   body{background:#fff;color:#000}
-  .selector,.progresso,.aviso,.reset,.abas,.tema{display:none}
+  .selector,.progresso,.destaque,.reset,.abas,.tema{display:none}
   .encontro{break-inside:avoid}
   .item{background:#fff}
 }
@@ -280,7 +293,7 @@ footer{
   </nav>
   <h1>Cronograma</h1>
   <p class="lede" id="lede"></p>
-  <div class="aviso">
+  <div class="destaque">
     <span aria-hidden="true">◇</span>
     <span><b>A data do evento ainda depende da escola</b>, mas deve acontecer em 12/11 ou 26/11, sempre numa quinta. As tarefas do dia do evento aparecem no bloco marcado e mudam de lugar quando a escola responder.</span>
   </div>
@@ -316,29 +329,35 @@ footer{
 </div>
 
 <script>
+/* manha e noite são as duas datas do mesmo encontro.
+   livre e livreSub substituem as datas em blocos sem par de aula.
+   nota é o aviso destacado da linha. */
+
 /* ————— Aba 1, cronograma de aulas ————— */
 const AULAS = [
-  { ter:"04/08", qui:"06/08",
+  { manha:"04/08", noite:"06/08",
     t:"Alinhamentos iniciais, divisão da turma, distribuição de tarefas" },
-  { ter:"18/08", qui:"20/08",
+  { manha:"18/08", noite:"20/08",
     t:"Distribuição de tarefas e alinhamentos sobre convidados" },
-  { ter:"01/09", qui:"03/09",
+  { manha:"01/09", noite:"03/09",
+    nota:"Encontro da ABRI, alinhamentos via grupo oficial",
     t:"Retorno do primeiro contato com a escola e com os palestrantes, com número de alunos e de palestrantes confirmados, e checagem de verba para o banner" },
-  { ter:"15/09", qui:"17/09",
+  { manha:"15/09", noite:"17/09",
     t:"Entrega das análises conjunturais, orçamento e definição do fornecedor do lanche, reserva do espaço com o CSC e primeira versão dos materiais de divulgação com feedbacks da turma" },
-  { ter:"29/09", qui:"01/10",
+  { manha:"29/09", noite:"01/10",
     t:"Entrega da 1ª versão do e-book e comentários da turma, versão final dos materiais de divulgação, alinhamento com o Centro de Produção e conferência de espaço e materiais dos palestrantes, mais relato de trabalho" },
-  { ter:"13/10", qui:"15/10", semaula:true,
-    t:"MINIONU, não haverá aula presencial, relato de trabalho por escrito" },
-  { ter:"27/10", qui:"29/10",
+  { manha:"13/10", noite:"15/10",
+    nota:"MINIONU, alinhamentos via grupo oficial",
+    t:"Relato de trabalho por escrito, sem encontro presencial" },
+  { manha:"27/10", noite:"29/10",
     t:"Entrega da 2ª versão do e-book, confirmação final da escola e dos palestrantes, início da divulgação, crachás, plaquinhas e material do mestre de cerimônia, alinhamento da operação do dia do evento. Versão final do e-book entregue em 03/11, fora dos encontros" },
-  { ter:"10/11", qui:"12/11", evento:true,
+  { manha:"10/11", noite:"12/11", evento:true,
     t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
-  { ter:"24/11", qui:"26/11", evento:true,
+  { manha:"24/11", noite:"26/11", evento:true,
     t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
-  { ter:"08/12", qui:"10/12",
+  { manha:"08/12", noite:"10/12",
     t:"Fechamento operacional, com certificados, devolução de materiais e preenchimento do formulário de extensão" },
-  { ter:"15/12", qui:"17/12",
+  { manha:"15/12", noite:"17/12",
     t:"Alinhamentos finais e relatório" }
 ];
 
@@ -356,23 +375,24 @@ const GRUPOS = {
 };
 
 const ENCONTROS = [
-  { ter:"04/08", qui:"06/08",
+  { manha:"04/08", noite:"06/08",
     pauta:"Alinhamentos iniciais, divisão da turma nos oito grupos e primeira distribuição de tarefas. Fechar a proposta para a escola com as duas datas candidatas.",
     tarefas:[] },
 
-  { ter:"18/08", qui:"20/08",
+  { manha:"18/08", noite:"20/08",
     pauta:"Distribuição de tarefas e alinhamentos sobre convidados. Cada grupo sai com os itens de 01/09 e 15/09 na mão.",
     tarefas:[] },
 
-  { ter:"01/09", qui:"03/09",
-    pauta:"Retorno dos primeiros contatos e relato de trabalho.",
+  { manha:"01/09", noite:"03/09",
+    nota:"Encontro da ABRI, alinhamentos via grupo oficial",
+    pauta:"Os prazos abaixo continuam valendo. O retorno dos primeiros contatos vai para o grupo oficial no lugar do relato em sala.",
     tarefas:[
       { g:"escola",       t:"Primeiro contato com a escola, resposta à proposta e número de alunos" },
       { g:"palestrantes", t:"Primeiro contato com os palestrantes, resposta à proposta e número de convidados" },
       { g:"divulgacao",   t:"Conferir se há verba para o banner da extensão" }
     ] },
 
-  { ter:"15/09", qui:"17/09",
+  { manha:"15/09", noite:"17/09",
     pauta:"Entrega das análises conjunturais e primeira rodada de logística.",
     tarefas:[
       { g:"turma",        t:"Entrega das análises conjunturais, terça para a manhã e quinta para a noite" },
@@ -383,7 +403,7 @@ const ENCONTROS = [
       { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação e feedbacks da turma" }
     ] },
 
-  { ter:"29/09", qui:"01/10",
+  { manha:"29/09", noite:"01/10",
     pauta:"Primeira versão do e-book, comentários da turma e relato de trabalho. Distribuir as dez tarefas de 27/10, com metade marcada para estar pronta em 13/10.",
     tarefas:[
       { g:"ebook",        t:"Entrega da 1ª versão do e-book" },
@@ -395,11 +415,12 @@ const ENCONTROS = [
       { g:"divulgacao",   t:"Versão final dos materiais de divulgação e feedbacks da turma" }
     ] },
 
-  { ter:"13/10", qui:"15/10", semaula:true,
-    pauta:"MINIONU, não haverá aula presencial. Cada grupo envia relato por escrito no registro compartilhado, com metade dos itens de 27/10 já prontos.",
+  { manha:"13/10", noite:"15/10",
+    nota:"MINIONU, alinhamentos via grupo oficial",
+    pauta:"Cada grupo envia relato por escrito no registro compartilhado, com metade dos itens de 27/10 já prontos.",
     tarefas:[] },
 
-  { ter:"27/10", qui:"29/10",
+  { manha:"27/10", noite:"29/10",
     pauta:"Segunda versão do e-book e ensaio da operação do dia. Sai daqui a escala nominal por horário, o mapa do espaço, a pauta do mestre de cerimônia e o plano B para ausência de palestrante.",
     tarefas:[
       { g:"ebook",          t:"Entrega da 2ª versão do e-book" },
@@ -414,19 +435,19 @@ const ENCONTROS = [
       { g:"institucionais", t:"Material do mestre de cerimônia, pauta e mini-currículos" }
     ] },
 
-  { ter:"03/11", qui:"terça sem aula", semencontro:true,
+  { livre:"03/11", livreSub:"sem encontro",
     pauta:"Entrega remota, entre um encontro e outro.",
     tarefas:[
       { g:"ebook", t:"Entrega da versão final do e-book" }
     ] },
 
-  { ter:"10/11", qui:"12/11",
-    pauta:"Se o evento for em 12/11, esta terça é a última preparação e a quinta é o próprio evento. A autorização de entrada de material vence hoje, dois dias antes.",
+  { manha:"10/11", noite:"12/11",
+    pauta:"Se o evento for em 12/11, a terça é a última preparação e a quinta é o próprio evento. A autorização de entrada de material vence na terça, dois dias antes.",
     tarefas:[
       { g:"materiais", t:"Lista de autorização de entrada de material, se houver" }
     ] },
 
-  { evento:true, ter:"Dia do evento", qui:"12/11 ou 26/11",
+  { evento:true, livre:"Dia do evento", livreSub:"12/11 ou 26/11",
     pauta:"O bloco inteiro anda junto com a data que a escola confirmar.",
     tarefas:[
       { g:"ebook",        t:"Divulgação do e-book" },
@@ -440,11 +461,11 @@ const ENCONTROS = [
       { g:"divulgacao",   t:"Registro em redes sociais" }
     ] },
 
-  { ter:"24/11", qui:"26/11",
-    pauta:"Se o evento aconteceu em 12/11, esta semana é de relatório e divisão da redação. Se for em 26/11, esta terça é a última preparação e a quinta é o próprio evento.",
+  { manha:"24/11", noite:"26/11",
+    pauta:"Se o evento aconteceu em 12/11, esta semana é de relatório e divisão da redação. Se for em 26/11, a terça é a última preparação e a quinta é o próprio evento.",
     tarefas:[] },
 
-  { ter:"08/12", qui:"10/12",
+  { manha:"08/12", noite:"10/12",
     pauta:"Fechamento operacional, com certificados, devolução de materiais e formulário de extensão.",
     tarefas:[
       { g:"institucionais", t:"Certificados, layout e preenchimento final" },
@@ -452,7 +473,7 @@ const ENCONTROS = [
       { g:"turma",          t:"Preenchimento do formulário de extensão" }
     ] },
 
-  { ter:"15/12", qui:"17/12",
+  { manha:"15/12", noite:"17/12",
     pauta:"Alinhamentos finais, relatório e avaliação da disciplina.",
     tarefas:[] }
 ];
@@ -472,14 +493,23 @@ function salvar(){
   try { localStorage.setItem(CHAVE, JSON.stringify([...feitas])); } catch (e) {}
 }
 
+function blocoData(e, extra){
+  const corpo = e.livre
+    ? `<p class="linha"><span class="d">${e.livre}</span>
+         ${e.livreSub ? `<span class="rot">${e.livreSub}</span>` : ""}</p>`
+    : `<p class="linha"><span class="rot">manhã</span><span class="d">${e.manha}</span></p>
+       <p class="linha"><span class="rot">noite</span><span class="d">${e.noite}</span></p>`;
+  return `<div class="data">${corpo}${extra || ""}</div>`;
+}
+
 function montarAulas(){
   document.getElementById("aulas").innerHTML = AULAS.map(a =>
-    `<section class="encontro${a.semaula ? " folga" : ""}${a.evento ? " evento" : ""}">
-      <div class="data">
-        <span class="ter">${a.ter}</span>
-        <span class="qui">${a.qui} qui</span>
+    `<section class="encontro${a.evento ? " evento" : ""}">
+      ${blocoData(a)}
+      <div>
+        ${a.nota ? `<p class="nota">${a.nota}</p>` : ""}
+        <p class="pauta">${a.t}</p>
       </div>
-      <div><p class="pauta${a.semaula ? " semaula" : ""}">${a.t}</p></div>
     </section>`).join("");
 }
 
@@ -513,15 +543,11 @@ function montarTimeline(){
           <span class="txt"><span class="grupo">${GRUPOS[t.g]}</span>
           <span class="acao">${t.t}</span></span></label></li>`;
     }).join("");
-    const dataQui = (e.evento || e.semencontro) ? e.qui : e.qui + " qui";
     return `<section class="encontro${apagado ? " apagado" : ""}${e.evento ? " evento" : ""}">
-      <div class="data">
-        <span class="ter">${e.ter}</span>
-        <span class="qui">${dataQui}</span>
-        ${rotulo ? `<span class="n">${rotulo}</span>` : ""}
-      </div>
+      ${blocoData(e, rotulo ? `<span class="n">${rotulo}</span>` : "")}
       <div>
-        <p class="pauta${e.semaula ? " semaula" : ""}">${e.pauta}</p>
+        ${e.nota ? `<p class="nota">${e.nota}</p>` : ""}
+        <p class="pauta">${e.pauta}</p>
         ${itens ? `<ul class="lista${visiveis.length > 3 ? " duas" : ""}">${itens}</ul>`
                 : (n && apagado
                     ? `<p class="vazio">Nada do seu grupo vence nesta data.</p>`
