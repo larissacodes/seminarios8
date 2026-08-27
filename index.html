@@ -22,7 +22,7 @@
   --g-escola:#1057c9;
   --g-palestrantes:#00798f;
   --g-ebook:#0b7a38;
-  --g-comida:#986500;
+  --g-dinamicas:#986500;
   --g-espaco:#cc4400;
   --g-materiais:#a80c2e;
   --g-divulgacao:#6a1fd0;
@@ -41,7 +41,7 @@
   --g-escola:#6c9dff;
   --g-palestrantes:#2fc6dc;
   --g-ebook:#3ecc72;
-  --g-comida:#e8b62c;
+  --g-dinamicas:#e8b62c;
   --g-espaco:#ff8340;
   --g-materiais:#ff667f;
   --g-divulgacao:#b184ff;
@@ -145,7 +145,7 @@ h1{
 .tag[data-g="escola"]{--c:var(--g-escola);color:var(--c)}
 .tag[data-g="palestrantes"]{--c:var(--g-palestrantes);color:var(--c)}
 .tag[data-g="ebook"]{--c:var(--g-ebook);color:var(--c)}
-.tag[data-g="comida"]{--c:var(--g-comida);color:var(--c)}
+.tag[data-g="dinamicas"]{--c:var(--g-dinamicas);color:var(--c)}
 .tag[data-g="espaco"]{--c:var(--g-espaco);color:var(--c)}
 .tag[data-g="materiais"]{--c:var(--g-materiais);color:var(--c)}
 .tag[data-g="divulgacao"]{--c:var(--g-divulgacao);color:var(--c)}
@@ -222,7 +222,7 @@ h1{
 .item[data-g="escola"]{--c:var(--g-escola)}
 .item[data-g="palestrantes"]{--c:var(--g-palestrantes)}
 .item[data-g="ebook"]{--c:var(--g-ebook)}
-.item[data-g="comida"]{--c:var(--g-comida)}
+.item[data-g="dinamicas"]{--c:var(--g-dinamicas)}
 .item[data-g="espaco"]{--c:var(--g-espaco)}
 .item[data-g="materiais"]{--c:var(--g-materiais)}
 .item[data-g="divulgacao"]{--c:var(--g-divulgacao)}
@@ -343,14 +343,14 @@ const AULAS = [
     nota:"Encontro da ABRI, alinhamentos via grupo oficial",
     t:"Retorno do primeiro contato com a escola e com os palestrantes, com número de alunos e de palestrantes confirmados, e checagem de verba para o banner" },
   { manha:"15/09", noite:"17/09",
-    t:"Entrega das análises conjunturais, orçamento e definição do fornecedor do lanche, reserva do espaço com o CSC e primeira versão dos materiais de divulgação com feedbacks da turma" },
+    t:"Entrega das análises conjunturais, primeira apresentação de ideias de dinâmicas, reserva do espaço com o CSC e primeira versão dos materiais de divulgação com feedbacks da turma" },
   { manha:"29/09", noite:"01/10",
-    t:"Entrega da 1ª versão do e-book e comentários da turma, versão final dos materiais de divulgação, alinhamento com o Centro de Produção e conferência de espaço e materiais dos palestrantes, mais relato de trabalho" },
+    t:"Entrega da 1ª versão do e-book e comentários da turma, segunda apresentação de ideias de dinâmicas, versão final dos materiais de divulgação e conferência de espaço e materiais dos palestrantes, mais relato de trabalho" },
   { manha:"13/10", noite:"15/10",
     nota:"MINIONU, alinhamentos via grupo oficial",
     t:"Relato de trabalho por escrito, sem encontro presencial" },
   { manha:"27/10", noite:"29/10",
-    t:"Entrega da 2ª versão do e-book, confirmação final da escola e dos palestrantes, início da divulgação, crachás, plaquinhas e material do mestre de cerimônia, alinhamento da operação do dia do evento. Versão final do e-book entregue em 03/11, fora dos encontros" },
+    t:"Entrega da 2ª versão do e-book, confirmação final da escola e dos palestrantes, entrega dos materiais de dinâmicas, início da divulgação, crachás, plaquinhas e material do mestre de cerimônia, alinhamento da operação do dia do evento. Versão final do e-book entregue em 03/11, fora dos encontros" },
   { manha:"10/11", noite:"12/11", evento:true,
     t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
   { manha:"24/11", noite:"26/11", evento:true,
@@ -366,7 +366,7 @@ const GRUPOS = {
   escola:        "Escola",
   palestrantes:  "Palestrantes",
   ebook:         "E-book",
-  comida:        "Logística comida",
+  dinamicas:     "Logística dinâmicas",
   espaco:        "Logística espaço",
   materiais:     "Logística materiais",
   divulgacao:    "Mídias divulgação",
@@ -389,16 +389,16 @@ const ENCONTROS = [
     tarefas:[
       { g:"escola",       t:"Primeiro contato com a escola, resposta à proposta e número de alunos" },
       { g:"palestrantes", t:"Primeiro contato com os palestrantes, resposta à proposta e número de convidados" },
-      { g:"divulgacao",   t:"Conferir se há verba para o banner da extensão" }
+      { g:"divulgacao",   t:"Conferir se há verba para o banner da extensão com a coordenação do curso e o Centro de Produção" }
     ] },
 
   { manha:"15/09", noite:"17/09",
     pauta:"Entrega das análises conjunturais e primeira rodada de logística.",
     tarefas:[
-      { g:"turma",        t:"Entrega das análises conjunturais, terça para a manhã e quinta para a noite" },
+      { g:"turma",        t:"Entrega das análises conjunturais para Larissa, terça para a manhã e quinta para a noite" },
       { g:"escola",       t:"Acompanhamento da escola" },
       { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
-      { g:"comida",       t:"Orçamento e definição do fornecedor, com materiais do lanche" },
+      { g:"dinamicas",    t:"Apresentação de ideias sobre dinâmicas para a turma" },
       { g:"espaco",       t:"Definir a reserva do espaço com o CSC" },
       { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação e feedbacks da turma" }
     ] },
@@ -409,7 +409,7 @@ const ENCONTROS = [
       { g:"ebook",        t:"Entrega da 1ª versão do e-book" },
       { g:"escola",       t:"Acompanhamento da escola" },
       { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
-      { g:"comida",       t:"Alinhamento com o Centro de Produção do ICS" },
+      { g:"dinamicas",    t:"Segunda apresentação de ideias sobre dinâmicas para a turma" },
       { g:"espaco",       t:"Contato com o CSC para o layout do espaço" },
       { g:"materiais",    t:"Conferir disponibilidade dos materiais pedidos pelos palestrantes" },
       { g:"divulgacao",   t:"Versão final dos materiais de divulgação e feedbacks da turma" }
@@ -426,7 +426,7 @@ const ENCONTROS = [
       { g:"ebook",          t:"Entrega da 2ª versão do e-book" },
       { g:"escola",         t:"Confirmação final da escola" },
       { g:"palestrantes",   t:"Confirmação final dos palestrantes" },
-      { g:"comida",         t:"Aprovação da verba do Centro de Produção e contato com o fornecedor" },
+      { g:"dinamicas",      t:"Entrega dos materiais de dinâmicas e feedback" },
       { g:"espaco",         t:"Mapa final do espaço e verificação do layout" },
       { g:"materiais",      t:"Reservar oficialmente os materiais com o CSC e com o audiovisual" },
       { g:"divulgacao",     t:"Começar a divulgação e confeccionar o convite" },
@@ -453,7 +453,7 @@ const ENCONTROS = [
       { g:"ebook",        t:"Divulgação do e-book" },
       { g:"escola",       t:"Recepção da escola" },
       { g:"palestrantes", t:"Recepção dos palestrantes" },
-      { g:"comida",       t:"Buscar e organizar o lanche" },
+      { g:"dinamicas",    t:"Divisão do grupo para realização das dinâmicas" },
       { g:"espaco",       t:"Organização do espaço, junto com materiais" },
       { g:"materiais",    t:"Lista de presença dos alunos" },
       { g:"materiais",    t:"Organização do espaço, junto com espaço" },
@@ -466,11 +466,11 @@ const ENCONTROS = [
     tarefas:[] },
 
   { manha:"08/12", noite:"10/12",
-    pauta:"Fechamento operacional, com certificados, devolução de materiais e formulário de extensão.",
+    pauta:"Fechamento operacional. A devolução dos materiais e o formulário de extensão vencem logo depois do evento, e os certificados ficam para 10/12.",
     tarefas:[
-      { g:"institucionais", t:"Certificados, layout e preenchimento final" },
-      { g:"materiais",      t:"Devolução dos materiais" },
-      { g:"turma",          t:"Preenchimento do formulário de extensão" }
+      { g:"materiais",      t:"Devolução dos materiais, logo após o evento" },
+      { g:"turma",          t:"Preenchimento do formulário de extensão, logo após o evento" },
+      { g:"institucionais", t:"Certificados, layout e preenchimento final, até 10/12" }
     ] },
 
   { manha:"15/12", noite:"17/12",
