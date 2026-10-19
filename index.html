@@ -18,16 +18,16 @@
   --muted:#5f6f74;
   --faint:#8b9a9c;
   --on-c:#ffffff;
+  --on-claro:#1f1800;
   --aviso:#986500;
-  --g-escola:#1057c9;
-  --g-palestrantes:#00798f;
-  --g-ebook:#0b7a38;
-  --g-dinamicas:#986500;
-  --g-espaco:#cc4400;
-  --g-materiais:#a80c2e;
-  --g-divulgacao:#6a1fd0;
-  --g-institucionais:#be1490;
-  --g-turma:#4a5c63;
+  /* cores por família de grupo */
+  --g-contato:#9b1fc0;
+  --g-midias:#c95f00;
+  --g-logistica:#1559c7;
+  --g-ebook:#c21414;
+  --g-certificados:#e9b000;
+  --g-certificados-txt:#8a6500;
+  --g-turma:#38761d;
 }
 :root[data-theme="dark"]{
   --ink:#e8ece6;
@@ -38,15 +38,13 @@
   --faint:#6d7f84;
   --on-c:#0d1214;
   --aviso:#e8b62c;
-  --g-escola:#6c9dff;
-  --g-palestrantes:#2fc6dc;
-  --g-ebook:#3ecc72;
-  --g-dinamicas:#e8b62c;
-  --g-espaco:#ff8340;
-  --g-materiais:#ff667f;
-  --g-divulgacao:#b184ff;
-  --g-institucionais:#ff6ed0;
-  --g-turma:#9aabaf;
+  --g-contato:#d08bff;
+  --g-midias:#ff9d4d;
+  --g-logistica:#72a3ff;
+  --g-ebook:#ff6e6e;
+  --g-certificados:#ffcb3d;
+  --g-certificados-txt:#ffcb3d;
+  --g-turma:#86d15c;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -123,6 +121,14 @@ h1{
 .aba[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600}
 .aba[aria-selected="true"] small{color:var(--paper);opacity:.7}
 
+/* cor de cada grupo, vale para crachás e tarefas */
+[data-g="escola"],[data-g="palestrantes"]{--c:var(--g-contato)}
+[data-g="divulgacao"],[data-g="institucionais"]{--c:var(--g-midias)}
+[data-g="dinamicas"],[data-g="materiais"]{--c:var(--g-logistica)}
+[data-g="ebook"]{--c:var(--g-ebook)}
+[data-g="certificados"]{--c:var(--g-certificados);--t:var(--g-certificados-txt);--on-c:var(--on-claro)}
+[data-g="turma"]{--c:var(--g-turma)}
+
 /* seletor de grupos, os crachás */
 .selector{margin:0 0 8px}
 .selector h2{
@@ -142,17 +148,8 @@ h1{
 .tag:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .tag .dot{width:10px;height:10px;border-radius:50%;background:var(--c,currentColor);flex:0 0 auto}
 .tag[data-g="todos"] .dot{display:none}
-.tag[data-g="escola"]{--c:var(--g-escola);color:var(--c)}
-.tag[data-g="palestrantes"]{--c:var(--g-palestrantes);color:var(--c)}
-.tag[data-g="ebook"]{--c:var(--g-ebook);color:var(--c)}
-.tag[data-g="dinamicas"]{--c:var(--g-dinamicas);color:var(--c)}
-.tag[data-g="espaco"]{--c:var(--g-espaco);color:var(--c)}
-.tag[data-g="materiais"]{--c:var(--g-materiais);color:var(--c)}
-.tag[data-g="divulgacao"]{--c:var(--g-divulgacao);color:var(--c)}
-.tag[data-g="institucionais"]{--c:var(--g-institucionais);color:var(--c)}
-.tag[data-g="turma"]{--c:var(--g-turma);color:var(--c)}
-.tag[data-g][aria-pressed="true"],
-.tag[aria-pressed="true"]{
+.tag[data-g]:not([data-g="todos"]){color:var(--t,var(--c))}
+.tag[data-g][aria-pressed="true"]{
   background:var(--c,var(--ink));
   color:var(--on-c);
   border-color:var(--c,var(--ink));
@@ -212,22 +209,15 @@ h1{
 .item{
   display:flex;gap:11px;align-items:flex-start;
   background:var(--card);border:1px solid var(--rule);border-radius:2px;
-  padding:11px 13px;position:relative;
+  padding:11px 13px;position:relative;color:var(--ink);
   transition:border-color .15s;
 }
-.item[data-g]:hover{border-color:color-mix(in srgb, var(--c) 55%, var(--rule))}
 .item::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--c,var(--ink))}
-.item{color:var(--ink)}
-.item[data-g]{background:color-mix(in srgb, var(--c) 8%, var(--card));border-color:color-mix(in srgb, var(--c) 26%, var(--rule))}
-.item[data-g="escola"]{--c:var(--g-escola)}
-.item[data-g="palestrantes"]{--c:var(--g-palestrantes)}
-.item[data-g="ebook"]{--c:var(--g-ebook)}
-.item[data-g="dinamicas"]{--c:var(--g-dinamicas)}
-.item[data-g="espaco"]{--c:var(--g-espaco)}
-.item[data-g="materiais"]{--c:var(--g-materiais)}
-.item[data-g="divulgacao"]{--c:var(--g-divulgacao)}
-.item[data-g="institucionais"]{--c:var(--g-institucionais)}
-.item[data-g="turma"]{--c:var(--g-turma)}
+.item[data-g]{
+  background:color-mix(in srgb, var(--c) 8%, var(--card));
+  border-color:color-mix(in srgb, var(--c) 26%, var(--rule));
+}
+.item[data-g]:hover{border-color:color-mix(in srgb, var(--c) 55%, var(--rule))}
 .item label{display:flex;gap:11px;align-items:flex-start;cursor:pointer;width:100%}
 .item input{
   appearance:none;-webkit-appearance:none;margin:2px 0 0;flex:0 0 auto;
@@ -237,14 +227,14 @@ h1{
 .item input:checked{background:var(--c,var(--ink));border-color:var(--c,var(--ink))}
 .item input:checked::after{
   content:"";position:absolute;left:5px;top:2px;width:5px;height:9px;
-  border:solid var(--card);border-width:0 2px 2px 0;transform:rotate(42deg);
+  border:solid var(--on-c);border-width:0 2px 2px 0;transform:rotate(42deg);
 }
 .item input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .txt{min-width:0}
 .grupo{
   font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.06em;
   text-transform:uppercase;display:block;margin-bottom:2px;
-  color:var(--c,var(--muted));font-weight:500;
+  color:var(--t,var(--c,var(--muted)));font-weight:500;
 }
 .acao{font-size:14.5px;color:var(--ink);line-height:1.4;display:block}
 .item input:checked ~ .txt .acao{text-decoration:line-through;color:var(--faint)}
@@ -295,7 +285,7 @@ footer{
   <p class="lede" id="lede"></p>
   <div class="destaque">
     <span aria-hidden="true">◇</span>
-    <span><b>A data do evento ainda depende da escola</b>, mas deve acontecer em 12/11 ou 26/11, sempre numa quinta. As tarefas do dia do evento aparecem no bloco marcado e mudam de lugar quando a escola responder.</span>
+    <span><b>O evento acontece na quinta, 26/11.</b> As tarefas do dia aparecem no bloco marcado, na semana de 24/11 e 26/11.</span>
   </div>
 </header>
 
@@ -330,56 +320,57 @@ footer{
 
 <script>
 /* manha e noite são as duas datas do mesmo encontro.
-   livre e livreSub substituem as datas em blocos sem par de aula.
+   livre e livresub substituem as datas em blocos sem par de aula.
    nota é o aviso destacado da linha. */
 
-/* ————— Aba 1, cronograma de aulas ————— */
+/* aba 1, cronograma de aulas */
 const AULAS = [
   { manha:"04/08", noite:"06/08",
-    t:"Alinhamentos iniciais, divisão da turma, distribuição de tarefas" },
-  { manha:"18/08", noite:"20/08",
+    t:"Alinhamentos iniciais, divisão da turma e distribuição de tarefas" },
+  { manha:"18/08", noite:"27/08",
     t:"Distribuição de tarefas e alinhamentos sobre convidados" },
   { manha:"01/09", noite:"03/09",
     nota:"Encontro da ABRI, alinhamentos via grupo oficial",
-    t:"Retorno do primeiro contato com a escola e com os palestrantes, com número de alunos e de palestrantes confirmados, e checagem de verba para o banner" },
+    t:"Retorno do primeiro contato com a escola e com os palestrantes, com número de alunos e de palestrantes, e checagem de verba para o banner" },
   { manha:"15/09", noite:"17/09",
-    t:"Entrega das análises conjunturais, primeira apresentação de ideias de dinâmicas, reserva do espaço com o CSC e primeira versão dos materiais de divulgação com feedbacks da turma" },
+    t:"Entrega das análises conjunturais, primeira apresentação de ideias de dinâmicas e primeira versão dos materiais de divulgação com feedbacks da turma" },
   { manha:"29/09", noite:"01/10",
-    t:"Entrega da 1ª versão do e-book e comentários da turma, segunda apresentação de ideias de dinâmicas, versão final dos materiais de divulgação e conferência de espaço e materiais dos palestrantes, mais relato de trabalho" },
+    t:"Entrega da 1ª versão do e-book, segunda apresentação de ideias de dinâmicas, versão final dos materiais de divulgação e conferência dos materiais pedidos pelos palestrantes com o CSC e o audiovisual" },
   { manha:"13/10", noite:"15/10",
     nota:"MINIONU, alinhamentos via grupo oficial",
     t:"Relato de trabalho por escrito, sem encontro presencial" },
   { manha:"27/10", noite:"29/10",
-    t:"Entrega da 2ª versão do e-book, confirmação final da escola e dos palestrantes, entrega dos materiais de dinâmicas, início da divulgação, crachás, plaquinhas e material do mestre de cerimônia, alinhamento da operação do dia do evento. Versão final do e-book entregue em 03/11, fora dos encontros" },
-  { manha:"10/11", noite:"12/11", evento:true,
-    t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
+    t:"Confirmação final da escola e dos palestrantes, entrega dos materiais de dinâmicas, reserva oficial dos materiais com o CSC e o audiovisual e início da divulgação" },
+  { manha:"10/11", noite:"12/11",
+    t:"Template do certificado dos alunos do ensino médio, lista de autorização de entrada de material e material do mestre de cerimônia" },
+  { manha:"17/11", noite:"19/11",
+    t:"Entrega da versão final do e-book e últimos ajustes para o evento" },
   { manha:"24/11", noite:"26/11", evento:true,
-    t:"Possível data para o evento, com lista de autorização de entrada de material e divulgação do e-book" },
+    nota:"Dia do evento, quinta, 26/11",
+    t:"Última preparação na terça e evento na quinta, com recepção da escola e dos palestrantes, dinâmicas, lista de presença, registros e divulgação do e-book" },
   { manha:"08/12", noite:"10/12",
-    t:"Fechamento operacional, com certificados, devolução de materiais e preenchimento do formulário de extensão" },
-  { manha:"15/12", noite:"17/12",
-    t:"Alinhamentos finais e relatório" }
+    t:"Fechamento operacional, com produção dos certificados até 10/12. A devolução dos materiais e o formulário de extensão vencem logo depois do evento" }
 ];
 
-/* ————— Aba 2, cronograma de tarefas ————— */
+/* aba 2, cronograma de tarefas */
 const GRUPOS = {
-  escola:        "Escola",
-  palestrantes:  "Palestrantes",
-  ebook:         "E-book",
-  dinamicas:     "Logística dinâmicas",
-  espaco:        "Logística espaço",
-  materiais:     "Logística materiais",
-  divulgacao:    "Mídias divulgação",
-  institucionais:"Mídias institucionais",
-  turma:         "Turma inteira"
+  escola:         "Contato e recepção / escola",
+  palestrantes:   "Contato e recepção / palestrantes",
+  divulgacao:     "Mídias divulgação",
+  institucionais: "Mídias institucionais",
+  dinamicas:      "Logística dinâmicas",
+  materiais:      "Logística materiais",
+  ebook:          "E-book",
+  certificados:   "Certificados",
+  turma:          "Turma inteira"
 };
 
 const ENCONTROS = [
   { manha:"04/08", noite:"06/08",
-    pauta:"Alinhamentos iniciais, divisão da turma nos oito grupos e primeira distribuição de tarefas. Fechar a proposta para a escola com as duas datas candidatas.",
+    pauta:"Alinhamentos iniciais, divisão da turma nos oito grupos e primeira distribuição de tarefas.",
     tarefas:[] },
 
-  { manha:"18/08", noite:"20/08",
+  { manha:"18/08", noite:"27/08",
     pauta:"Distribuição de tarefas e alinhamentos sobre convidados. Cada grupo sai com os itens de 01/09 e 15/09 na mão.",
     tarefas:[] },
 
@@ -387,31 +378,30 @@ const ENCONTROS = [
     nota:"Encontro da ABRI, alinhamentos via grupo oficial",
     pauta:"Os prazos abaixo continuam valendo. O retorno dos primeiros contatos vai para o grupo oficial no lugar do relato em sala.",
     tarefas:[
-      { g:"escola",       t:"Primeiro contato com a escola, resposta à proposta e número de alunos" },
-      { g:"palestrantes", t:"Primeiro contato com os palestrantes, resposta à proposta e número de convidados" },
+      { g:"escola",       t:"Primeiro contato com a escola, resposta à proposta e número de alunos que vêm" },
+      { g:"palestrantes", t:"Primeiro contato com os palestrantes, resposta à proposta e número de palestrantes que vêm" },
       { g:"divulgacao",   t:"Conferir se há verba para o banner da extensão com a coordenação do curso e o Centro de Produção" }
     ] },
 
   { manha:"15/09", noite:"17/09",
     pauta:"Entrega das análises conjunturais e primeira rodada de logística.",
     tarefas:[
-      { g:"turma",        t:"Entrega das análises conjunturais para Larissa, terça para a manhã e quinta para a noite" },
+      { g:"turma",        t:"Entrega final das análises conjunturais, até 15/09" },
+      { g:"turma",        t:"Entrega das análises conjunturais para Larissa, até 17/09" },
       { g:"escola",       t:"Acompanhamento da escola" },
-      { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
+      { g:"palestrantes", t:"Acompanhamento dos palestrantes e checagem de demandas por materiais externos e internos" },
       { g:"dinamicas",    t:"Apresentação de ideias sobre dinâmicas para a turma" },
-      { g:"espaco",       t:"Definir a reserva do espaço com o CSC" },
-      { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação e feedbacks da turma" }
+      { g:"divulgacao",   t:"Primeira versão dos materiais de divulgação (banner, pôsteres, posts em redes sociais) e feedbacks da turma" }
     ] },
 
   { manha:"29/09", noite:"01/10",
-    pauta:"Primeira versão do e-book, comentários da turma e relato de trabalho. Distribuir as dez tarefas de 27/10, com metade marcada para estar pronta em 13/10.",
+    pauta:"Primeira versão do e-book, comentários da turma e relato de trabalho. Distribuir as tarefas de 27/10, com metade marcada para estar pronta em 13/10.",
     tarefas:[
       { g:"ebook",        t:"Entrega da 1ª versão do e-book" },
       { g:"escola",       t:"Acompanhamento da escola" },
-      { g:"palestrantes", t:"Acompanhamento e checagem de demandas por materiais" },
+      { g:"palestrantes", t:"Acompanhamento dos palestrantes e checagem de demandas por materiais externos e internos" },
       { g:"dinamicas",    t:"Segunda apresentação de ideias sobre dinâmicas para a turma" },
-      { g:"espaco",       t:"Contato com o CSC para o layout do espaço" },
-      { g:"materiais",    t:"Conferir disponibilidade dos materiais pedidos pelos palestrantes" },
+      { g:"materiais",    t:"Conferir com o CSC e com o audiovisual a disponibilidade dos materiais pedidos pelos palestrantes" },
       { g:"divulgacao",   t:"Versão final dos materiais de divulgação e feedbacks da turma" }
     ] },
 
@@ -421,76 +411,72 @@ const ENCONTROS = [
     tarefas:[] },
 
   { manha:"27/10", noite:"29/10",
-    pauta:"Segunda versão do e-book e ensaio da operação do dia. Sai daqui a escala nominal por horário, o mapa do espaço, a pauta do mestre de cerimônia e o plano B para ausência de palestrante.",
+    pauta:"Confirmações finais e ensaio da operação do dia. Sai daqui a escala nominal por horário, o mapa do espaço e o plano B para ausência de palestrante.",
     tarefas:[
-      { g:"ebook",          t:"Entrega da 2ª versão do e-book" },
-      { g:"escola",         t:"Confirmação final da escola" },
-      { g:"palestrantes",   t:"Confirmação final dos palestrantes" },
-      { g:"dinamicas",      t:"Entrega dos materiais de dinâmicas e feedback" },
-      { g:"espaco",         t:"Mapa final do espaço e verificação do layout" },
-      { g:"materiais",      t:"Reservar oficialmente os materiais com o CSC e com o audiovisual" },
-      { g:"divulgacao",     t:"Começar a divulgação e confeccionar o convite" },
-      { g:"institucionais", t:"Crachás da equipe e dos palestrantes" },
-      { g:"institucionais", t:"Plaquinhas dos estandes" },
-      { g:"institucionais", t:"Material do mestre de cerimônia, pauta e mini-currículos" }
-    ] },
-
-  { livre:"03/11", livreSub:"sem encontro",
-    pauta:"Entrega remota, entre um encontro e outro.",
-    tarefas:[
-      { g:"ebook", t:"Entrega da versão final do e-book" }
+      { g:"escola",       t:"Confirmação final da escola" },
+      { g:"palestrantes", t:"Confirmação final dos palestrantes" },
+      { g:"dinamicas",    t:"Entrega dos materiais de dinâmicas e feedback" },
+      { g:"materiais",    t:"Reservar oficialmente os materiais pedidos pelos palestrantes com o CSC e com o audiovisual" },
+      { g:"divulgacao",   t:"Começar a divulgação, com contato com o CSC para redes sociais e com o Centro de Produção para liberação do espaço, e confeccionar o convite" }
     ] },
 
   { manha:"10/11", noite:"12/11",
-    pauta:"Se o evento for em 12/11, a terça é a última preparação e a quinta é o próprio evento. A autorização de entrada de material vence na terça, dois dias antes.",
+    pauta:"Duas semanas antes do evento. O template do certificado e a autorização de entrada de material vencem na terça, e o material do mestre de cerimônia vence na quinta.",
     tarefas:[
-      { g:"materiais", t:"Lista de autorização de entrada de material, se houver" }
+      { g:"certificados",   t:"Template do certificado dos alunos do ensino médio, mais sóbrio, constando a participação na atividade de extensão “Olhares Sobre Política, Justiça e Instituições”, até 10/11" },
+      { g:"materiais",      t:"Lista de autorização de entrada de material, se houver, até 10/11" },
+      { g:"institucionais", t:"Material do mestre de cerimônia, com pauta e mini-currículos dos palestrantes, até 12/11" }
     ] },
 
-  { evento:true, livre:"Dia do evento", livreSub:"12/11 ou 26/11",
-    pauta:"O bloco inteiro anda junto com a data que a escola confirmar.",
+  { manha:"17/11", noite:"19/11",
+    pauta:"Semana anterior ao evento, com o fechamento do e-book.",
     tarefas:[
-      { g:"ebook",        t:"Divulgação do e-book" },
-      { g:"escola",       t:"Recepção da escola" },
-      { g:"palestrantes", t:"Recepção dos palestrantes" },
-      { g:"dinamicas",    t:"Divisão do grupo para realização das dinâmicas" },
-      { g:"espaco",       t:"Organização do espaço, junto com materiais" },
-      { g:"materiais",    t:"Lista de presença dos alunos" },
-      { g:"materiais",    t:"Organização do espaço, junto com espaço" },
-      { g:"divulgacao",   t:"Registro fotográfico" },
-      { g:"divulgacao",   t:"Registro em redes sociais" }
+      { g:"ebook", t:"Entrega da versão final do e-book, até 19/11" }
     ] },
 
-  { manha:"24/11", noite:"26/11",
-    pauta:"Se o evento aconteceu em 12/11, esta semana é de relatório e divisão da redação. Se for em 26/11, a terça é a última preparação e a quinta é o próprio evento.",
-    tarefas:[] },
+  { manha:"24/11", noite:"26/11", evento:true,
+    nota:"Dia do evento, quinta, 26/11",
+    pauta:"A terça é a última preparação da turma da manhã. Na quinta acontece o evento, e todas as tarefas abaixo são do próprio dia.",
+    tarefas:[
+      { g:"escola",         t:"Recepção da escola" },
+      { g:"palestrantes",   t:"Recepção dos palestrantes" },
+      { g:"dinamicas",      t:"Divisão do grupo para realização das dinâmicas" },
+      { g:"materiais",      t:"Organização do espaço" },
+      { g:"certificados",   t:"Lista de presença dos alunos, com forms e QR code para assinatura virtual e emissão dos certificados" },
+      { g:"ebook",          t:"Divulgação do e-book" },
+      { g:"institucionais", t:"Registro fotográfico" },
+      { g:"divulgacao",     t:"Registro em redes sociais" }
+    ] },
+
+  { livre:"Após o evento", livreSub:"logo depois de 26/11",
+    pauta:"Entregas sem data fixa, que vencem logo depois do evento.",
+    tarefas:[
+      { g:"materiais", t:"Devolução dos materiais" },
+      { g:"turma",     t:"Preenchimento do formulário de extensão" }
+    ] },
 
   { manha:"08/12", noite:"10/12",
-    pauta:"Fechamento operacional. A devolução dos materiais e o formulário de extensão vencem logo depois do evento, e os certificados ficam para 10/12.",
+    pauta:"Fechamento operacional, com a produção dos certificados até 10/12.",
     tarefas:[
-      { g:"materiais",      t:"Devolução dos materiais, logo após o evento" },
-      { g:"turma",          t:"Preenchimento do formulário de extensão, logo após o evento" },
-      { g:"institucionais", t:"Certificados, layout e preenchimento final, até 10/12" }
-    ] },
-
-  { manha:"15/12", noite:"17/12",
-    pauta:"Alinhamentos finais, relatório e avaliação da disciplina.",
-    tarefas:[] }
+      { g:"certificados", t:"Produzir os certificados dos alunos participantes do evento, até 10/12" }
+    ] }
 ];
 
+/* chave nova para as marcações, porque a lista de tarefas mudou */
 const CHAVE = "seminarios8";
+const CHAVE_FEITAS = CHAVE + "-feitas-v2";
 let feitas = new Set();
 let filtro = "todos";
 let aba = "aulas";
 
 try {
-  const salvo = localStorage.getItem(CHAVE);
+  const salvo = localStorage.getItem(CHAVE_FEITAS);
   if (salvo) feitas = new Set(JSON.parse(salvo));
   aba = localStorage.getItem(CHAVE + "-aba") || "aulas";
 } catch (e) {}
 
 function salvar(){
-  try { localStorage.setItem(CHAVE, JSON.stringify([...feitas])); } catch (e) {}
+  try { localStorage.setItem(CHAVE_FEITAS, JSON.stringify([...feitas])); } catch (e) {}
 }
 
 function blocoData(e, extra){
@@ -584,7 +570,7 @@ function aplicarAba(){
   document.querySelectorAll(".aba").forEach(b =>
     b.setAttribute("aria-selected", b.dataset.aba === aba));
   document.getElementById("lede").textContent = aba === "aulas"
-    ? "As aulas são quinzenais e funcionam como reuniões de acompanhamento. A turma da manhã se encontra na terça e a da noite na quinta, com a mesma pauta."
+    ? "As aulas funcionam como reuniões de acompanhamento, quase sempre quinzenais. A turma da manhã se encontra na terça e a da noite na quinta, com a mesma pauta."
     : "Cada data é o prazo limite, não o dia de começar. O trabalho acontece no intervalo entre um encontro e o seguinte, e a aula que cai na data serve para conferir o que venceu e distribuir o ciclo seguinte.";
   try { localStorage.setItem(CHAVE + "-aba", aba); } catch (e) {}
 }
