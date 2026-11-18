@@ -285,7 +285,7 @@ footer{
   <p class="lede" id="lede"></p>
   <div class="destaque">
     <span aria-hidden="true">◇</span>
-    <span><b>O evento acontece na quinta, 26/11.</b> As tarefas do dia aparecem no bloco marcado, na semana de 24/11 e 26/11.</span>
+    <span><b>O evento acontece na quinta, 26/11.</b> As tarefas do dia aparecem no bloco marcado. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes.</span>
   </div>
 </header>
 
@@ -345,9 +345,9 @@ const AULAS = [
     t:"Template do certificado dos alunos do ensino médio, lista de autorização de entrada de material e material do mestre de cerimônia" },
   { manha:"17/11", noite:"19/11",
     t:"Entrega da versão final do e-book e últimos ajustes para o evento" },
-  { manha:"24/11", noite:"26/11", evento:true,
-    nota:"Dia do evento, quinta, 26/11",
-    t:"Última preparação na terça e evento na quinta, com recepção da escola e dos palestrantes, dinâmicas, lista de presença, registros e divulgação do e-book" },
+  { livre:"26/11", livreSub:"quinta, dia do evento", evento:true,
+    nota:"Dia do evento",
+    t:"Evento, com recepção da escola e dos palestrantes, dinâmicas, lista de presença, registros e divulgação do e-book. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes" },
   { manha:"08/12", noite:"10/12",
     t:"Fechamento operacional, com produção dos certificados até 10/12. A devolução dos materiais e o formulário de extensão vencem logo depois do evento" }
 ];
@@ -417,7 +417,7 @@ const ENCONTROS = [
       { g:"palestrantes", t:"Confirmação final dos palestrantes" },
       { g:"dinamicas",    t:"Entrega dos materiais de dinâmicas, teste e feedback" },
       { g:"materiais",    t:"Reservar oficialmente os materiais pedidos pelos palestrantes com o CSC e com o audiovisual, se houver" },
-      { g:"divulgacao",   t:"Começar a divulgação e divulgar o convite a ser enviado para a esacola" }
+      { g:"divulgacao",   t:"Começar a divulgação e divulgar o convite a ser enviado para a escola" }
     ] },
 
   { manha:"10/11", noite:"12/11",
@@ -433,9 +433,9 @@ const ENCONTROS = [
       { g:"ebook", t:"Entrega da versão final do e-book, até 19/11" }
     ] },
 
-  { manha:"24/11", noite:"26/11", evento:true,
-    nota:"Dia do evento, quinta, 26/11",
-    pauta:"A terça é a última preparação da turma da manhã. Na quinta acontece o evento, e todas as tarefas abaixo são do próprio dia.",
+  { livre:"26/11", livreSub:"quinta, dia do evento", evento:true,
+    nota:"Dia do evento",
+    pauta:"Todas as tarefas abaixo são do próprio dia do evento. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes.",
     tarefas:[
       { g:"escola",         t:"Contato com a escola sobre horários" },
       { g:"palestrantes",   t:"Acompanhamento dos palestrantes" },
