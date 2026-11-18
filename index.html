@@ -20,6 +20,9 @@
   --on-c:#ffffff;
   --on-claro:#1f1800;
   --aviso:#986500;
+  /* vermelho do dia do evento */
+  --evento:#c8102e;
+  --on-evento:#ffffff;
   /* cores por família de grupo */
   --g-contato:#9b1fc0;
   --g-midias:#c95f00;
@@ -38,6 +41,8 @@
   --faint:#6d7f84;
   --on-c:#0d1214;
   --aviso:#e8b62c;
+  --evento:#ff5a5f;
+  --on-evento:#11171a;
   --g-contato:#d08bff;
   --g-midias:#ff9d4d;
   --g-logistica:#72a3ff;
@@ -101,10 +106,13 @@ h1{
 .lede{max-width:52ch;color:var(--muted);margin:0 0 28px;font-size:17px}
 .destaque{
   display:flex;gap:12px;align-items:flex-start;
-  border:1px dashed var(--rule);border-radius:2px;
+  border:1px dashed color-mix(in srgb, var(--evento) 60%, var(--rule));
+  background:color-mix(in srgb, var(--evento) 7%, transparent);
+  border-radius:2px;
   padding:14px 16px;margin:0 0 32px;font-size:14px;color:var(--muted);
 }
-.destaque b{color:var(--ink);font-weight:600}
+.destaque > span:first-child{color:var(--evento)}
+.destaque b{color:var(--evento);font-weight:600}
 
 /* abas */
 .abas{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 28px}
@@ -178,8 +186,6 @@ h1{
 }
 .encontro:last-of-type{border-bottom:1px solid var(--rule)}
 .encontro.apagado{opacity:.34}
-.encontro.evento .d{color:var(--ink)}
-.encontro.evento .pauta{border-left:2px solid var(--ink);padding-left:14px}
 .data{font-family:"IBM Plex Mono",monospace;line-height:1.3}
 .linha{margin:0 0 10px}
 .linha:last-of-type{margin-bottom:0}
@@ -192,16 +198,40 @@ h1{
   display:inline-block;margin-top:12px;font-size:11px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--faint);
 }
+.avisos{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
 .nota{
   font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.06em;
   text-transform:uppercase;color:var(--aviso);
   border:1px solid color-mix(in srgb, var(--aviso) 45%, transparent);
   background:color-mix(in srgb, var(--aviso) 9%, transparent);
-  border-radius:2px;padding:5px 9px;display:inline-block;margin:0 0 12px;line-height:1.4;
+  border-radius:2px;padding:5px 9px;display:inline-block;line-height:1.4;
 }
 .pauta{margin:0 0 16px;font-size:15px;color:var(--muted);max-width:56ch}
 .pauta:last-child{margin-bottom:0}
 .pauta strong{color:var(--ink);font-weight:600}
+
+/* destaque do dia do evento */
+.encontro.evento{
+  margin:0 -14px;padding:26px 14px;
+  border-top:2px solid var(--evento);
+  background:color-mix(in srgb, var(--evento) 8%, transparent);
+}
+.encontro.evento + .encontro{border-top-color:var(--evento)}
+.encontro.evento .d{color:var(--evento);font-size:28px;font-weight:500}
+.encontro.evento .rot{color:color-mix(in srgb, var(--evento) 75%, var(--muted))}
+.encontro.evento .pauta{border-left:2px solid var(--evento);padding-left:14px;color:var(--ink)}
+.encontro.evento .nota{
+  color:var(--evento);
+  border-color:color-mix(in srgb, var(--evento) 50%, transparent);
+  background:color-mix(in srgb, var(--evento) 10%, transparent);
+}
+.ida{
+  font-family:"IBM Plex Mono",monospace;font-size:11.5px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:500;line-height:1.4;
+  color:var(--on-evento);background:var(--evento);border:1px solid var(--evento);
+  border-radius:2px;padding:5px 9px;display:inline-flex;align-items:center;gap:7px;
+}
+.ida::before{content:"→";font-weight:500}
 
 /* tarefas */
 .lista{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -247,9 +277,11 @@ footer{
 @media (max-width:640px){
   .wrap{padding:28px 18px 60px}
   .encontro{grid-template-columns:1fr;gap:14px;padding:22px 0}
+  .encontro.evento{padding:22px 12px;margin:0 -12px}
   .data{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap}
   .linha{margin:0}
   .d{font-size:19px}
+  .encontro.evento .d{font-size:24px}
   .data .n{margin-top:0;margin-left:auto}
   .lista.duas{grid-template-columns:1fr}
 }
@@ -284,8 +316,8 @@ footer{
   <h1>Cronograma</h1>
   <p class="lede" id="lede"></p>
   <div class="destaque">
-    <span aria-hidden="true">◇</span>
-    <span><b>O evento acontece na quinta, 26/11.</b> As tarefas do dia aparecem no bloco marcado. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes.</span>
+    <span aria-hidden="true">◆</span>
+    <span><b>O evento acontece na quinta, 26/11, com ida a Sarzedo.</b> As tarefas do dia aparecem no bloco em vermelho. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes.</span>
   </div>
 </header>
 
@@ -321,7 +353,7 @@ footer{
 <script>
 /* manha e noite são as duas datas do mesmo encontro.
    livre e livresub substituem as datas em blocos sem par de aula.
-   nota é o aviso destacado da linha. */
+   nota é o aviso destacado da linha, ida é o selo de deslocamento. */
 
 /* aba 1, cronograma de aulas */
 const AULAS = [
@@ -346,7 +378,7 @@ const AULAS = [
   { manha:"17/11", noite:"19/11",
     t:"Entrega da versão final do e-book e últimos ajustes para o evento" },
   { livre:"26/11", livreSub:"quinta, dia do evento", evento:true,
-    nota:"Dia do evento",
+    nota:"Dia do evento", ida:"Ida a Sarzedo",
     t:"Evento, com recepção da escola e dos palestrantes, dinâmicas, lista de presença, registros e divulgação do e-book. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes" },
   { manha:"08/12", noite:"10/12",
     t:"Fechamento operacional, com produção dos certificados até 10/12. A devolução dos materiais e o formulário de extensão vencem logo depois do evento" }
@@ -434,7 +466,7 @@ const ENCONTROS = [
     ] },
 
   { livre:"26/11", livreSub:"quinta, dia do evento", evento:true,
-    nota:"Dia do evento",
+    nota:"Dia do evento", ida:"Ida a Sarzedo",
     pauta:"Todas as tarefas abaixo são do próprio dia do evento. Na terça, 24/11, a turma da manhã tem apenas os últimos ajustes.",
     tarefas:[
       { g:"escola",         t:"Contato com a escola sobre horários" },
@@ -487,12 +519,21 @@ function blocoData(e, extra){
   return `<div class="data">${corpo}${extra || ""}</div>`;
 }
 
+/* aviso e selo de ida, quando houver */
+function avisos(e){
+  if (!e.nota && !e.ida) return "";
+  return `<div class="avisos">
+    ${e.nota ? `<span class="nota">${e.nota}</span>` : ""}
+    ${e.ida ? `<span class="ida">${e.ida}</span>` : ""}
+  </div>`;
+}
+
 function montarAulas(){
   document.getElementById("aulas").innerHTML = AULAS.map(a =>
     `<section class="encontro${a.evento ? " evento" : ""}">
       ${blocoData(a)}
       <div>
-        ${a.nota ? `<p class="nota">${a.nota}</p>` : ""}
+        ${avisos(a)}
         <p class="pauta">${a.t}</p>
       </div>
     </section>`).join("");
@@ -531,7 +572,7 @@ function montarTimeline(){
     return `<section class="encontro${apagado ? " apagado" : ""}${e.evento ? " evento" : ""}">
       ${blocoData(e, rotulo ? `<span class="n">${rotulo}</span>` : "")}
       <div>
-        ${e.nota ? `<p class="nota">${e.nota}</p>` : ""}
+        ${avisos(e)}
         <p class="pauta">${e.pauta}</p>
         ${itens ? `<ul class="lista${visiveis.length > 3 ? " duas" : ""}">${itens}</ul>`
                 : (n && apagado
